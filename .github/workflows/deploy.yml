@@ -45,7 +45,6 @@ jobs:
   deploy-supabase:
     name: Deploy Supabase Migrations
     runs-on: ubuntu-latest
-    if: secrets.SUPABASE_ACCESS_TOKEN != '' && secrets.SUPABASE_PROJECT_REF != ''
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -61,6 +60,10 @@ jobs:
           SUPABASE_DB_PASSWORD: ${{ secrets.SUPABASE_DB_PASSWORD }}
           PROJECT_REF: ${{ secrets.SUPABASE_PROJECT_REF }}
         run: |
-          supabase link --project-ref "$PROJECT_REF" --password "$SUPABASE_DB_PASSWORD"
-          supabase db push --password "$SUPABASE_DB_PASSWORD"
+          if [ -n "$SUPABASE_ACCESS_TOKEN" ] && [ -n "$PROJECT_REF" ]; then
+            supabase link --project-ref "$PROJECT_REF" --password "$SUPABASE_DB_PASSWORD"
+            supabase db push --password "$SUPABASE_DB_PASSWORD"
+          else
+            echo "Supabase credentials not configured, skipping migration step."
+          fi
 
