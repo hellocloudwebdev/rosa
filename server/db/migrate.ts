@@ -4,10 +4,20 @@
  * Called at boot by `server/db/index.ts` and standalone by `npm run db:migrate`.
  * Migrations are forward-only and idempotent.
  */
+import path from "node:path";
 import { createDatabase, migrate, type DbDatabase } from "./node-driver.ts";
 
-export function runMigrations(path?: string): DbDatabase {
-  const resolved = path ?? process.env.ROSA_DB_PATH ?? "data/rosa.db";
+/** Validate and resolve safe sqlite db path */
+function resolveDbPath(targetPath?: string): string {
+  const raw = targetPath ?? process.env.ROSA_DB_PATH ?? "data/rosa.db";
+  if (/[\0\r\n`$|;&<>]/.test(raw)) {
+    throw new Error("Invalid characters in ROSA_DB_PATH");
+  }
+  return path.normalize(raw);
+}
+
+export function runMigrations(dbPath?: string): DbDatabase {
+  const resolved = resolveDbPath(dbPath);
   const db = createDatabase(resolved);
   const { applied } = migrate(db);
   if (applied.length === 0) {
