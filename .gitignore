@@ -19,3 +19,13 @@ Thumbs.db
 # Env files
 .env
 .env.*
+
+# Local data & SQLite databases
+data/
+*.sqlite
+*.sqlite-shm
+*.sqlite-wal
+*.db
+*.db-shm
+*.db-wal
+

@@ -1,39 +1,53 @@
 {
-  "name": "acme-ace-studio",
+  "name": "rosa-ai-workspace",
   "private": true,
-  "version": "0.1.0",
+  "version": "1.0.0",
   "type": "module",
+  "description": "Multi-model AI chat and comparison workspace with BYOK provider management",
   "scripts": {
-    "dev": "vite",
-    "build": "tsc && vite build",
-    "preview": "vite preview",
-    "tauri": "tauri"
+    "dev": "node scripts/dev.mjs",
+    "dev:api": "node server/dev.ts",
+    "dev:web": "vite",
+    "build": "tsc --noEmit && vite build",
+    "start": "node server/entry.ts",
+    "typecheck": "tsc --noEmit",
+    "test": "node --test \"tests/*.test.ts\"",
+    "db:migrate": "node scripts/migrate.ts",
+    "preview": "vite preview"
   },
   "dependencies": {
+    "@clerk/react": "^6.17.8",
     "@radix-ui/react-dialog": "^1.1.6",
     "@radix-ui/react-dropdown-menu": "^2.1.6",
     "@radix-ui/react-popover": "^1.1.6",
     "@radix-ui/react-select": "^2.1.6",
     "@radix-ui/react-slot": "^1.1.2",
     "@radix-ui/react-tooltip": "^1.1.8",
-    "@tauri-apps/api": "^2.2.0",
+    "@supabase/supabase-js": "^2.118.0",
     "clsx": "^2.1.1",
+    "dompurify": "^3.4.17",
     "framer-motion": "^12.4.7",
+    "highlight.js": "^11.11.1",
+    "katex": "0.19.0",
     "lucide-react": "^0.475.0",
+    "marked": "^15.0.7",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
-    "tailwind-merge": "^3.0.1"
+    "tailwind-merge": "^3.1.0"
   },
   "devDependencies": {
-    "@tauri-apps/cli": "^2.2.3",
+    "@cloudflare/workers-types": "^4.20250109.0",
     "@types/node": "^22.13.4",
     "@types/react": "^19.0.8",
     "@types/react-dom": "^19.0.3",
     "@vitejs/plugin-react": "^4.3.4",
     "autoprefixer": "^10.4.20",
-    "postcss": "^8.5.2",
+    "postcss": "^8.5.3",
     "tailwindcss": "^3.4.17",
     "typescript": "~5.7.2",
     "vite": "^6.1.0"
+  },
+  "engines": {
+    "node": ">=22.8.0"
   }
 }

@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Send, Mail, Users, PanelRight, ChevronDown, Check } from "lucide-react";
 import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
+import { SignInButton, UserButton, useAuth } from "@clerk/react";
 import { AceMoonIcon } from "./icons/AceMoonIcon";
 import { VIEW_LIST } from "./view/views";
 import type { ViewType } from "../types";
@@ -24,6 +25,7 @@ export function StudioHeader({
   onOpenView,
 }: StudioHeaderProps) {
   const [isEditingTitle, setIsEditingTitle] = useState(false);
+  const { isSignedIn } = useAuth();
 
   return (
     <header className="border-b border-[var(--border-subtle)] px-5 py-2.5 flex items-center justify-between bg-[var(--bg-panel)] shrink-0 z-20 transition-colors">
@@ -134,6 +136,18 @@ export function StudioHeader({
           <Send className="w-3.5 h-3.5" />
           <span>Deploy Campaign</span>
         </button>
+
+        <div className="flex items-center ml-2 border-l border-[var(--border-subtle)] pl-2">
+          {!isSignedIn ? (
+            <SignInButton mode="modal">
+              <button className="px-3 py-1.5 text-xs font-semibold border border-[var(--border-strong)] rounded-lg hover:bg-[var(--hover-overlay)] text-[var(--text-primary)] transition-colors cursor-pointer">
+                Sign In
+              </button>
+            </SignInButton>
+          ) : (
+            <UserButton />
+          )}
+        </div>
       </div>
     </header>
   );
